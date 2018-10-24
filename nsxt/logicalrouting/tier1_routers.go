@@ -9,16 +9,18 @@ import (
 )
 
 type Tier1Routers struct {
-	client logicalRoutingAPI
-	ctx    context.Context
-	logger logger
+	client       logicalRoutingAPI
+	ctx          context.Context
+	logger       logger
+	staticRoutes staticRoutes
 }
 
-func NewTier1Routers(client logicalRoutingAPI, ctx context.Context, logger logger) Tier1Routers {
+func NewTier1Routers(client logicalRoutingAPI, ctx context.Context, logger logger, staticRoutes staticRoutes) Tier1Routers {
 	return Tier1Routers{
-		client: client,
-		ctx:    ctx,
-		logger: logger,
+		client:       client,
+		ctx:          ctx,
+		logger:       logger,
+		staticRoutes: staticRoutes,
 	}
 }
 
@@ -37,7 +39,7 @@ func (t Tier1Routers) List(filter string) ([]common.Deletable, error) {
 			continue
 		}
 
-		resource := NewTier1Router(t.client, t.ctx, router.DisplayName, router.Id)
+		resource := NewTier1Router(t.client, t.ctx, router.DisplayName, router.Id, t.staticRoutes)
 
 		if !strings.Contains(router.DisplayName, filter) {
 			continue

@@ -126,12 +126,12 @@ func NewLeftovers(logger logger, managerHost, user, password string) (Leftovers,
 		return Leftovers{}, fmt.Errorf("Error creating NSX-T API client: %s", err)
 	}
 
+	staticRoutes := logicalrouting.NewStaticRoutes(nsxtClient.LogicalRoutingAndServicesApi, nsxtClient.Context)
+	routers := logicalrouting.NewTier1Routers(nsxtClient.LogicalRoutingAndServicesApi, nsxtClient.Context, logger, staticRoutes)
+
 	return Leftovers{
 		logger:       logger,
 		asyncDeleter: app.NewAsyncDeleter(logger),
-		resources: []resource{
-			logicalrouting.NewTier1Routers(nsxtClient.LogicalRoutingAndServicesApi, nsxtClient.Context, logger),
-			// TBD
-		},
+		resources:    []resource{routers},
 	}, nil
 }

@@ -6,26 +6,33 @@ import (
 )
 
 type Tier1Router struct {
-	client logicalRoutingAPI
-	ctx    context.Context
-	id     string
-	name   string
+	client       logicalRoutingAPI
+	ctx          context.Context
+	id           string
+	name         string
+	staticRoutes staticRoutes
 }
 
-func NewTier1Router(client logicalRoutingAPI, ctx context.Context, name, id string) Tier1Router {
+func NewTier1Router(client logicalRoutingAPI, ctx context.Context, name, id string, staticRoutes staticRoutes) Tier1Router {
 	return Tier1Router{
-		client: client,
-		ctx:    ctx,
-		name:   name,
-		id:     id,
+		client:       client,
+		ctx:          ctx,
+		name:         name,
+		id:           id,
+		staticRoutes: staticRoutes,
 	}
 }
 
 func (t Tier1Router) Delete() error {
+	err := t.staticRoutes.Delete(t.id)
+	if err != nil {
+		return fmt.Errorf("Delete static routes: %s", err)
+	}
+
 	options := map[string]interface{}{
 		"force": true,
 	}
-	_, err := t.client.DeleteLogicalRouter(t.ctx, t.id, options)
+	_, err = t.client.DeleteLogicalRouter(t.ctx, t.id, options)
 	if err != nil {
 		return fmt.Errorf("Delete: %s", err)
 	}

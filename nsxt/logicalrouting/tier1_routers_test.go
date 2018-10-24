@@ -14,6 +14,7 @@ import (
 var _ = Describe("Tier 1 Routers", func() {
 	var (
 		client       *fakes.LogicalRoutingAndServicesAPI
+		staticRoutes *fakes.StaticRoutes
 		logger       *fakes.Logger
 		ctx          context.Context
 		tier1Routers logicalrouting.Tier1Routers
@@ -22,12 +23,13 @@ var _ = Describe("Tier 1 Routers", func() {
 	BeforeEach(func() {
 		client = &fakes.LogicalRoutingAndServicesAPI{}
 		logger = &fakes.Logger{}
+		staticRoutes = &fakes.StaticRoutes{}
 
 		ctx = context.WithValue(context.Background(), "fruit", "soursop")
 
 		logger.PromptWithDetailsCall.Returns.Proceed = true
 
-		tier1Routers = logicalrouting.NewTier1Routers(client, ctx, logger)
+		tier1Routers = logicalrouting.NewTier1Routers(client, ctx, logger, staticRoutes)
 	})
 
 	Describe("List", func() {
