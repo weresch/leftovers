@@ -9,12 +9,12 @@ import (
 )
 
 type Tier1Routers struct {
-	client logicalRoutingAPI
+	client logicalroutingClient
 	ctx    context.Context
 	logger logger
 }
 
-func NewTier1Routers(client logicalRoutingAPI, ctx context.Context, logger logger) Tier1Routers {
+func NewTier1Routers(client logicalroutingClient, ctx context.Context, logger logger) Tier1Routers {
 	return Tier1Routers{
 		client: client,
 		ctx:    ctx,

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestDns(t *testing.T) {
+func TestLogicalRouting(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "nsxt/logicalrouting")
 }

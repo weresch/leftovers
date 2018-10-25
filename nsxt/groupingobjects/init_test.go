@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestGroupingobjects(t *testing.T) {
+func TestGroupingObjects(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Groupingobjects Suite")
+	RunSpecs(t, "nsxt/groupingobjects")
 }
